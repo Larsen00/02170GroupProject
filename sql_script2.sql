@@ -53,13 +53,13 @@ END$$
 
 DELIMITER ;
 
-
--- Example of update statement 
+-- Example of update statement - flag all customers with an invalid age (AE = Age Error)
 UPDATE Customer
-SET name = CONCAT("ZZ_", name)
+SET name = CONCAT("AE_", name)
 WHERE CalculateAge(birthdate);
 
--- Example of delete
-DELETE FROM Customer WHERE id = 1;
+-- Example of delete - delete all customers flagged with "AE_"
+DELETE FROM Customer 
+WHERE name LIKE "AE_%";
 
 
