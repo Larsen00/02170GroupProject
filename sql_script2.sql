@@ -67,3 +67,12 @@ select * from prices;
 
 
 
+-- Example of update statement 
+UPDATE Customer
+SET name = "Dragonoverlord3000"
+WHERE id = 2;
+
+-- Example of dele
+DELETE FROM Customer WHERE id = 1;
+
+
