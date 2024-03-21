@@ -1,6 +1,7 @@
 USE ISSUE_BANK;
 
 -- Function and event for calculating new prices 
+
 DELIMITER //
 CREATE FUNCTION randomPercentage() RETURNS DECIMAL(5,2)
 BEGIN
@@ -21,6 +22,7 @@ DELIMITER //
 
 CREATE EVENT new_prices
 ON SCHEDULE EVERY 1 day
+STARTS CURRENT_TIMESTAMP + INTERVAL 1 DAY
 DO
 BEGIN
     UPDATE prices
@@ -28,4 +30,8 @@ BEGIN
 END//
 DELIMITER ;
 -- End of function and event for calculating new prices 
+
+select * from prices;
+
+
 
