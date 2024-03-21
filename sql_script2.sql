@@ -35,6 +35,24 @@ select * from prices;
 
 
 
+
+
+
+
+
+
+
+-- Trigger -> Before create af trade, check om der eksisterer en pris på den givne dato på den givne issue
+DELIMITER $$
+CREATE TRIGGER Trades_Before_Insert
+BEFORE INSERT ON trades FOR EACH ROW
+BEGIN 
+    IF NEW.date NOT IN (SELECT prices.date FROM prices);
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'The trade date does not exist in the prices table.';
+    ENDIF;
+END$$
+DELIMITER ;
+
 -- Age Function
 DELIMITER $$
 
