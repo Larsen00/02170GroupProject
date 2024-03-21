@@ -185,7 +185,7 @@ INSERT INTO prices (isin, date, price) VALUES
 ('GB0009252882', '2022-11-01', 5.32),   -- BP PLC
 ('US38259P5089', '2022-10-01', 2784.4), -- Google Inc. Bond
 ('BTC000000002', '2022-09-01', 32000),  -- Ethereum Tracker One
-('US0378331005', '2023-04-17', 103.4), -- Apple Inc. Bond on 2023-04-17
+('US0378331005', '2023-04-18', 103.4), -- Apple Inc. Bond on 2023-04-17
 ('EU000A1G0V05', '2022-07-01', 140.4), -- Siemens AG on 2022-07-01
 ('GB0009252882', '2023-03-18', 5.32), -- BP PLC on 2023-03-18
 ('US0231351067', '2023-01-05', 3110.77), -- Amazon.com Inc. on 2023-01-05
@@ -294,7 +294,8 @@ DELIMITER ;
 
 # TEST
 SELECT convert_currency('USD', 'DKK', '2023-04-17');
-SELECT calc_trade_value('US0378331005', '2023-04-17', 7, 5, 'USD', 'DKK') ;
+SELECT investment_value (1000, 'US0378331005', '2023-04-17');
+SELECT calc_trade_value('US0378331005', '2023-04-17', 1, 5, 'USD', 'DKK');
 
 
 
