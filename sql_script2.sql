@@ -39,6 +39,9 @@ select * from prices;
 
 
 
+
+
+
 -- Trigger -> Before create af trade, check om der eksisterer en pris på den givne dato på den givne issue
 DELIMITER $$
 CREATE TRIGGER Trades_Before_Insert
