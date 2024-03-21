@@ -112,7 +112,7 @@ INSERT INTO currency (valuta, date, exchange_rate) VALUES
 ('DKK', '2023-02-01', 1.0),
 ('DKK', '2023-03-01', 1.0),
 ('DKK', '2023-04-01', 1.0),
-('USD', '2023-01-01', 1.45),
+('USD', '2022-01-01', 1.45),
 ('USD', '2023-02-01', 1.50),
 ('USD', '2023-03-01', 1.55),
 ('USD', '2023-04-01', 1.48),
@@ -167,7 +167,7 @@ INSERT INTO prices (isin, date, price) VALUES
 ('DK0009806740', '2023-06-13', 169.5), -- Vestas Wind Systems on 2023-06-13
 ('DK0009806740', '2022-02-08', 221.3), -- Vestas Wind Systems on 2022-02-08
 ('DK0009806740', '2021-05-24', 245.7), -- Vestas Wind Systems on 2021-05-24
-('US0378331005', '2022-11-08', 103.4), -- Apple Inc. Bond on 2022-11-08
+('US0378331005', '2023-04-17', 1), -- Apple Inc. Bond on 2023-04-17
 ('US0378331005', '2021-09-13', 101.5), -- Apple Inc. Bond on 2021-09-13
 ('BTC000000001', '2023-06-13', 29000),  -- Bitcoin Tracker One on 2023-06-13
 ('BTC000000001', '2022-02-08', 40000),  -- Bitcoin Tracker One on 2022-02-08
@@ -203,14 +203,28 @@ CREATE FUNCTION supremum_valuta_date (d DATE, v VARCHAR(3))
 	END//
 DELIMITER ;
 
-
+DELIMITER //
+CREATE FUNCTION supremum_price_date (d DATE, isin VARCHAR(12))
+	RETURNS DATE
+    BEGIN
+		DECLARE s_date DATE;
+		SELECT
+				MAX(date) into s_date
+			FROM
+				prices
+			WHERE 
+				prices.isin = isin AND
+				prices.date <= d;
+		RETURN s_date;
+	END//
+DELIMITER ;
 
 
 DELIMITER //
 CREATE FUNCTION convert_currency (f VARCHAR(3), t VARCHAR(3), d DATE)
 	RETURNS float
     BEGIN
-		DECLARE xr1 INT;
+		DECLARE xr1 FLOAT;
 		DECLARE xr2 FLOAT;
 		SELECT 
 				exchange_rate into xr1 
@@ -232,6 +246,22 @@ DELIMITER ;
 	
 
 DELIMITER //
+CREATE FUNCTION investment_value (amount int, isin VARCHAR(12), d date)
+	RETURNS FLOAT
+    BEGIN
+		DECLARE p FLOAT;
+			SELECT 
+					price INTO p
+				FROM 
+					prices
+				WHERE 
+					prices.date = supremum_price_date(d, isin);
+		RETURN p*amount;
+    END//
+DELIMITER ;
+
+
+DELIMITER //
 CREATE FUNCTION calc_trade_value (isin VARCHAR(12), trade_date date, d_number int, c_id int, issue_valuta VARCHAR(3), deposit_valuta VARCHAR(3) )
 	RETURNS FLOAT
 	BEGIN
@@ -246,17 +276,23 @@ CREATE FUNCTION calc_trade_value (isin VARCHAR(12), trade_date date, d_number in
 				trades.date = trade_date AND 
 				trades.deposit_number = d_number AND 
 				trades.customer_id = c_id;
-		SELECT 
-				price INTO p
-            FROM 
-				prices
-            WHERE 
-				prices.date = trade_date;
-		RETURN amt*p*convert_currency(issue_valuta, deposit_valuta, trade_date);
+		RETURN investment_value(amt, isin, trade_date)*convert_currency(issue_valuta, deposit_valuta, trade_date);
 	END//
 DELIMITER ;
 
+
+
+
+
+
+
+
+
+# TEST
+SELECT convert_currency('USD', 'DKK', '2023-04-17');
 SELECT calc_trade_value('US0378331005', '2023-04-17', 7, 5, 'USD', 'DKK') ;
+
+
 
 
 # CREATE FUNCTION customer_investment_value (c_id int, d date)
