@@ -73,7 +73,19 @@ CREATE FUNCTION CalculateAge(birthdate DATE) RETURNS INT
 BEGIN 
     RETURN DATEDIFF(year, birthdate, NOW());
 END$$
+
+CREATE TRIGGER customer_Before_insert
+BEFORE INSERT ON customer FOR EACH ROW
+BEGIN
+    IF calculateAge(NEW.date_of_birth)<18 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'customer is underaged';
+    END IF;
+END$$
+
 DELIMITER ;
+
+
+
 
 
 -- Example of update statement 
