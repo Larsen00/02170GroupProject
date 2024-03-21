@@ -94,16 +94,16 @@ INSERT INTO customer (name, date_of_birth, join_date) VALUE
 INSERT INTO deposit (number, customer_id, name, startup_date, currency) VALUES
 (1, 1, 'Savings Account', '2022-03-20', 'DKK'),
 (2, 1, 'Holiday Fund', '2022-04-15', 'DKK'),
-(3, 2, 'Emergency Fund', '2022-08-01', 'DKK'),
-(4, 2, 'Crypto Investment', '2022-09-10', 'BTC'),
-(5, 3, 'House Savings', '2023-01-10', 'DKK'),
-(6, 4, 'Education Fund', '2023-02-20', 'DKK'),
-(7, 5, 'Retirement Fund', '2023-04-15', 'DKK'),
-(8, 6, 'Travel Wallet', '2022-09-01', 'DKK'),
-(9, 7, 'Rainy Day Fund', '2022-12-01', 'DKK'),
-(10, 8, 'Investment Portfolio', '2023-03-15', 'DKK'),
-(11, 9, 'Wedding Savings', '2022-06-01', 'DKK'),
-(12, 10, 'Golden Years', '2022-12-20', 'DKK');
+(1, 2, 'Emergency Fund', '2022-08-01', 'DKK'),
+(2, 2, 'Crypto Investment', '2022-09-10', 'BTC'),
+(1, 3, 'House Savings', '2023-01-10', 'DKK'),
+(1, 4, 'Education Fund', '2023-02-20', 'DKK'),
+(1, 5, 'Retirement Fund', '2023-04-15', 'DKK'),
+(1, 6, 'Travel Wallet', '2022-09-01', 'DKK'),
+(1, 7, 'Rainy Day Fund', '2022-12-01', 'DKK'),
+(1, 8, 'Investment Portfolio', '2023-03-15', 'DKK'),
+(1, 9, 'Wedding Savings', '2022-06-01', 'DKK'),
+(1, 10, 'Golden Years', '2022-12-20', 'DKK');
 
 
 -- Inserting data into `currency`
@@ -149,16 +149,16 @@ INSERT INTO issue (isin, name, type, volume, valuta) VALUES
 
 -- Inserting data into `investment`
 INSERT INTO trades (issue_isin, deposit_number, customer_id, date, amount) VALUES
-('US0378331005', 7, 5, '2023-04-17', 1000), -- Apple Inc. Bond investment by Lucas Davis
-('DK0009806740', 9, 7, '2023-01-02', 2000), -- Vestas Wind Systems investment by Olivia Martinez
-('EU000A1G0V05', 11, 9, '2022-07-01', 1500), -- Siemens AG investment by Ava Thompson
-('GB0009252882', 10, 8, '2023-03-18', 2500), -- BP PLC investment by Liam Anderson
-('US0231351067', 12, 10, '2023-01-05', 3000), -- Amazon.com Inc. stock investment by Isabella Garcia
+('US0378331005', 1, 5, '2023-04-17', 1000), -- Apple Inc. Bond investment by Lucas Davis
+('DK0009806740', 1, 7, '2023-01-02', 2000), -- Vestas Wind Systems investment by Olivia Martinez
+('EU000A1G0V05', 1, 9, '2022-07-01', 1500), -- Siemens AG investment by Ava Thompson
+('GB0009252882', 1, 8, '2023-03-18', 2500), -- BP PLC investment by Liam Anderson
+('US0231351067', 1, 10, '2023-01-05', 3000), -- Amazon.com Inc. stock investment by Isabella Garcia
 ('BTC000000002', 1, 1, '2023-03-21', 0.2),  -- Ethereum Tracker One investment by Elena Smith
-('EU000A1G0V00', 3, 2, '2022-08-15', 4000), -- Volkswagen AG investment by John Doe
-('GB0031348658', 5, 3, '2023-02-11', 1000), -- GlaxoSmithKline PLC investment by Michael Johnson
-('DK0010268606', 6, 4, '2023-03-01', 500),  -- Carlsberg Group A/S investment by Sophia Brown
-('US5949181045', 8, 6, '2022-09-05', 750);  -- Microsoft Corp. Bond investment by Emma Wilson
+('EU000A1G0V00', 1, 2, '2022-08-15', 4000), -- Volkswagen AG investment by John Doe
+('GB0031348658', 1, 3, '2023-02-11', 1000), -- GlaxoSmithKline PLC investment by Michael Johnson
+('DK0010268606', 1, 4, '2023-03-01', 500),  -- Carlsberg Group A/S investment by Sophia Brown
+('US5949181045', 1, 6, '2022-09-05', 750);  -- Microsoft Corp. Bond investment by Emma Wilson
 
 
 
@@ -184,8 +184,12 @@ INSERT INTO prices (isin, date, price) VALUES
 ('DK0010268606', '2022-12-01', 1100.00),-- Carlsberg Group A/S
 ('GB0009252882', '2022-11-01', 5.32),   -- BP PLC
 ('US38259P5089', '2022-10-01', 2784.4), -- Google Inc. Bond
-('BTC000000002', '2022-09-01', 32000);  -- Ethereum Tracker One
-
+('BTC000000002', '2022-09-01', 32000),  -- Ethereum Tracker One
+('US0378331005', '2023-04-17', 103.4), -- Apple Inc. Bond on 2023-04-17
+('EU000A1G0V05', '2022-07-01', 140.4), -- Siemens AG on 2022-07-01
+('GB0009252882', '2023-03-18', 5.32), -- BP PLC on 2023-03-18
+('US0231351067', '2023-01-05', 3110.77), -- Amazon.com Inc. on 2023-01-05
+('BTC000000002', '2023-03-21', 32000); -- Ethereum Tracker One on 2023-03-21
 
 
 
