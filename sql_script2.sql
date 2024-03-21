@@ -52,6 +52,49 @@ BEGIN
 END$$
 
 DELIMITER ;
+-- Function and trigger for checking ISIN validity
+DELIMITER //
+CREATE FUNCTION checkIsin(isin varchar(12)) RETURNS BOOLEAN
+BEGIN
+    DECLARE firstChar VARCHAR(1);
+    DECLARE secondChar VARCHAR(1);
+    DECLARE restOfString VARCHAR(10);
+    
+    SET firstChar = LEFT(isin, 1);
+    SET secondChar = SUBSTRING(isin, 2,1);
+	SET restOfString = SUBSTRING(isin, 3,10);
+
+    IF ((ASCII(firstChar) BETWEEN 65 AND 90)  AND (ASCII(secondChar) BETWEEN 65 AND 90) AND restOfString REGEXP '^[0-9]+$') THEN
+        RETURN TRUE;
+    ELSE RETURN FALSE;
+    END IF;
+END //
+
+
+CREATE TRIGGER trades_Before_insert 
+BEFORE INSERT ON trades FOR EACH ROW
+BEGIN
+	# Raise and error if isin is invalid
+  IF NOT checkIsin(NEW.issue_isin) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ISIN is invalid';
+  END IF;
+END //
+-- END OF Function and trigger for checking ISIN validity
+
+
+
+-- Queries Opgave 6
+-- Give three examples of typical SQL query statements using joins, group by,
+-- and set operations like UNION and IN. For each query explain informally
+-- what it asks about. Show also the output of the queries.
+
+
+-- number of people with pension accounts
+SELECT COUNT(*) AS "pension accounts" FROM deposit WHERE deposit.name LIKE '%Pension%'; 
+
+-- sum of money invested for each customer
+SELECT customer_id, SUM(p.price) FROM trades t JOIN prices p ON t.issue_isin = p.isin AND t.date = p.date GROUP BY t.customer_id;
+
 
 -- Example of update statement - flag all customers with an invalid age (AE = Age Error)
 UPDATE Customer
@@ -61,5 +104,7 @@ WHERE CalculateAge(birthdate);
 -- Example of delete - delete all customers flagged with "AE_"
 DELETE FROM Customer 
 WHERE name LIKE "AE_%";
+
+
 
 
