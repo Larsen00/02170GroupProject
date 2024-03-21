@@ -35,12 +35,21 @@ select * from prices;
 
 
 
+-- Age Function
+DELIMITER $$
+CREATE FUNCTION CalculateAge(birthdate DATE) RETURNS INT
+BEGIN 
+    RETURN DATEDIFF(year, birthdate, NOW());
+END$$
+DELIMITER ;
+
+
 -- Example of update statement 
 UPDATE Customer
 SET name = "Dragonoverlord3000"
 WHERE id = 2;
 
--- Example of dele
+-- Example of delete
 DELETE FROM Customer WHERE id = 1;
 
 
