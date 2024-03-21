@@ -147,7 +147,7 @@ INSERT INTO issue (isin, name, type, volume, valuta) VALUES
 
 
 -- Inserting data into `investment`
-INSERT INTO investment (issue_isin, deposit_number, customer_id, trade_date, amount) VALUES
+INSERT INTO trades (issue_isin, deposit_number, customer_id, date, amount) VALUES
 ('US0378331005', 7, 5, '2023-04-17', 1000), -- Apple Inc. Bond investment by Lucas Davis
 ('DK0009806740', 9, 7, '2023-01-02', 2000), -- Vestas Wind Systems investment by Olivia Martinez
 ('EU000A1G0V05', 11, 9, '2022-07-01', 1500), -- Siemens AG investment by Ava Thompson
@@ -186,32 +186,76 @@ INSERT INTO prices (isin, date, price) VALUES
 ('BTC000000002', '2022-09-01', 32000);  -- Ethereum Tracker One
 
 
+DELIMITER //
+CREATE FUNCTION supremum_valuta_date (d DATE, v VARCHAR(3))
+	RETURNS DATE
+    BEGIN
+		DECLARE s_date DATE;
+		SELECT
+				MAX(date) into s_date
+			FROM
+				currency
+			WHERE 
+				currency.valuta = v AND
+				currency.date <= d;
+		RETURN s_date;
+	END//
+DELIMITER ;
 
 
-# DELIMITER //
-# CREATE FUNCTION calc_trade_value (isin VARCHAR(12), trade_date date, d_number int, c_id int)
-# 	RETURNS FLOAT
-# 	BEGIN
-# 		DECLARE amt INT;
-#         DECLARE p FLOAT;
-# 		SELECT 
-# 				trades.amount INTO amt 
-#             FROM 
-# 				trades 
-# 			WHERE 
-# 				trades.issue_isin = isin AND 
-# 				trades.date = trade_date AND 
-# 				trades.deposit_number = d_number AND 
-# 				trades.customer_id = c_id;
-# 		SELECT 
-# 				price INTO p
-#             FROM 
-# 				prices
-#             WHERE 
-#             prices.date = trade_date;
-# 		
-# 	END//
-# DELIMITER ;
+
+
+DELIMITER //
+CREATE FUNCTION convert_currency (f VARCHAR(3), t VARCHAR(3), d DATE)
+	RETURNS float
+    BEGIN
+		DECLARE xr1 INT;
+		DECLARE xr2 FLOAT;
+		SELECT 
+				exchange_rate into xr1 
+			FROM 
+				currency
+			WHERE 
+				currency.valuta = f AND
+				currency.date = supremum_valuta_date(d, f);
+		SELECT 
+				exchange_rate into xr2
+			FROM 
+				currency 
+			WHERE 
+				currency.valuta = t AND
+				currency.date = supremum_valuta_date(d, t);
+		 RETURN xr1/xr2;
+	END//
+DELIMITER ;
+	
+
+DELIMITER //
+CREATE FUNCTION calc_trade_value (isin VARCHAR(12), trade_date date, d_number int, c_id int, issue_valuta VARCHAR(3), deposit_valuta VARCHAR(3) )
+	RETURNS FLOAT
+	BEGIN
+		DECLARE amt INT;
+        DECLARE p FLOAT;
+		SELECT 
+				trades.amount INTO amt 
+            FROM 
+				trades
+			WHERE 
+				trades.issue_isin = isin AND 
+				trades.date = trade_date AND 
+				trades.deposit_number = d_number AND 
+				trades.customer_id = c_id;
+		SELECT 
+				price INTO p
+            FROM 
+				prices
+            WHERE 
+				prices.date = trade_date;
+		RETURN amt*p*convert_currency(issue_valuta, deposit_valuta, trade_date);
+	END//
+DELIMITER ;
+
+SELECT calc_trade_value('US0378331005', '2023-04-17', 7, 5, 'USD', 'DKK') ;
 
 
 # CREATE FUNCTION customer_investment_value (c_id int, d date)
