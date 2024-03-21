@@ -147,7 +147,7 @@ INSERT INTO issue (isin, name, type, volume, valuta) VALUES
 
 
 -- Inserting data into `investment`
-INSERT INTO investment (issue_isin, deposit_number, customer_id, trade_date, amount) VALUES
+INSERT INTO trades (issue_isin, deposit_number, customer_id, date, amount) VALUES
 ('US0378331005', 7, 5, '2023-04-17', 1000), -- Apple Inc. Bond investment by Lucas Davis
 ('DK0009806740', 9, 7, '2023-01-02', 2000), -- Vestas Wind Systems investment by Olivia Martinez
 ('EU000A1G0V05', 11, 9, '2022-07-01', 1500), -- Siemens AG investment by Ava Thompson
