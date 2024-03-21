@@ -97,3 +97,8 @@ WHERE id = 2;
 DELETE FROM Customer WHERE id = 1;
 
 
+
+-- Queries Opgave 6
+-- Give three examples of typical SQL query statements using joins, group by,
+-- and set operations like UNION and IN. For each query explain informally
+-- what it asks about. Show also the output of the queries.
