@@ -1,5 +1,3 @@
-
-
 DROP DATABASE IF EXISTS issue_bank;
 CREATE DATABASE issue_bank ; 
 USE issue_bank;
@@ -42,13 +40,13 @@ CREATE TABLE issue(
 );
 
 # Assumes no fractional shares
-CREATE TABLE investment(
-	issue_isin VARCHAR(20),
+CREATE TABLE trades(
+	issue_isin VARCHAR(12),
     deposit_number INT,
     customer_id INT,
-    trade_date DATE,
+    date DATE,
     amount INT NOT NULL,
-    PRIMARY KEY(issue_isin, deposit_number, customer_id, trade_date),
+    PRIMARY KEY(issue_isin, deposit_number, customer_id, date),
     FOREIGN KEY(deposit_number) REFERENCES deposit(number),
     FOREIGN KEY(customer_id) REFERENCES customer(id) ON DELETE CASCADE,
     FOREIGN KEY(issue_isin) REFERENCES issue(isin)
@@ -187,6 +185,38 @@ INSERT INTO prices (isin, date, price) VALUES
 ('US38259P5089', '2022-10-01', 2784.4), -- Google Inc. Bond
 ('BTC000000002', '2022-09-01', 32000);  -- Ethereum Tracker One
 
+
+
+
+# DELIMITER //
+# CREATE FUNCTION calc_trade_value (isin VARCHAR(12), trade_date date, d_number int, c_id int)
+# 	RETURNS FLOAT
+# 	BEGIN
+# 		DECLARE amt INT;
+#         DECLARE p FLOAT;
+# 		SELECT 
+# 				trades.amount INTO amt 
+#             FROM 
+# 				trades 
+# 			WHERE 
+# 				trades.issue_isin = isin AND 
+# 				trades.date = trade_date AND 
+# 				trades.deposit_number = d_number AND 
+# 				trades.customer_id = c_id;
+# 		SELECT 
+# 				price INTO p
+#             FROM 
+# 				prices
+#             WHERE 
+#             prices.date = trade_date;
+# 		
+# 	END//
+# DELIMITER ;
+
+
+# CREATE FUNCTION customer_investment_value (c_id int, d date)
+# 	RETURNS FLOAT
+# 	
 
 
 
