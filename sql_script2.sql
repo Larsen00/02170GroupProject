@@ -31,38 +31,6 @@ END//
 DELIMITER ;
 -- End of function and event for calculating new prices 
 
-
--- Function and trigger for checking ISIN validity
-DELIMITER //
-CREATE FUNCTION checkIsin(isin varchar(12)) RETURNS BOOLEAN
-BEGIN
-    DECLARE firstChar VARCHAR(1);
-    DECLARE secondChar VARCHAR(1);
-    DECLARE restOfString VARCHAR(10);
-    
-    SET firstChar = LEFT(isin, 1);
-    SET secondChar = SUBSTRING(isin, 2,1);
-	SET restOfString = SUBSTRING(isin, 3,10);
-
-    IF ((ASCII(firstChar) BETWEEN 65 AND 90)  AND (ASCII(secondChar) BETWEEN 65 AND 90) AND restOfString REGEXP '^[0-9]+$') THEN
-        RETURN TRUE;
-    ELSE RETURN FALSE;
-    END IF;
-END //
-
-
-CREATE TRIGGER trades_Before_insert 
-BEFORE INSERT ON trades FOR EACH ROW
-BEGIN
-	# Raise and error if isin is invalid
-  IF NOT checkIsin(NEW.issue_isin) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ISIN is invalid';
-  END IF;
-END //
--- END OF Function and trigger for checking ISIN validity
-
-
-
 select * from prices;
 
 
@@ -73,32 +41,15 @@ CREATE FUNCTION CalculateAge(birthdate DATE) RETURNS INT
 BEGIN 
     RETURN DATEDIFF(year, birthdate, NOW());
 END$$
-
-CREATE TRIGGER customer_Before_insert
-BEFORE INSERT ON customer FOR EACH ROW
-BEGIN
-    IF calculateAge(NEW.date_of_birth)<18 THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'customer is underaged';
-    END IF;
-END$$
-
 DELIMITER ;
-
-
-
 
 
 -- Example of update statement 
 UPDATE Customer
-SET name = "Dragonoverlord3000"
-WHERE id = 2;
+SET name = CONCAT("ZZ_", name)
+WHERE CalculateAge(birthdate);
 
 -- Example of delete
 DELETE FROM Customer WHERE id = 1;
 
 
-
--- Queries Opgave 6
--- Give three examples of typical SQL query statements using joins, group by,
--- and set operations like UNION and IN. For each query explain informally
--- what it asks about. Show also the output of the queries.
