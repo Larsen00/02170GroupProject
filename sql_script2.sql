@@ -69,23 +69,24 @@ select * from prices;
 
 -- Age Function
 DELIMITER $$
+
 CREATE FUNCTION CalculateAge(birthdate DATE) RETURNS INT
 BEGIN 
-    RETURN DATEDIFF(year, birthdate, NOW());
+    RETURN TIMESTAMPDIFF(YEAR, birthdate, CURDATE());
 END$$
 
 CREATE TRIGGER customer_Before_insert
 BEFORE INSERT ON customer FOR EACH ROW
 BEGIN
-    IF calculateAge(NEW.date_of_birth)<18 THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'customer is underaged';
+    IF CalculateAge(NEW.date_of_birth) < 18 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Customer is underaged';
     END IF;
 END$$
 
+INSERT INTO customer (name, date_of_birth, join_date) VALUE
+('hann', '2010-12-05', '2022-03-15'),
+
 DELIMITER ;
-
-
-
 
 
 -- Example of update statement 

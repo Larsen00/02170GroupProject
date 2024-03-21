@@ -76,7 +76,8 @@ Possible extensions to setup:
 */
 
 -- Inserting data into `customer`
-INSERT INTO customer (name, date_of_birth, join_date) VALUES
+INSERT INTO customer (name, date_of_birth, join_date) VALUE
+('Elena Smith', '2010-12-05', '2022-03-15'),
 ('Elena Smith', '1998-12-05', '2022-03-15'),
 ('John Doe', '1969-08-13', '2022-07-22'),
 ('Michael Johnson', '1998-11-21', '2023-01-05'),
