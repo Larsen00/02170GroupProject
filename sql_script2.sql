@@ -30,6 +30,13 @@ DELIMITER ;
 -- End of function and event for calculating new prices 
 
 
+
+
+-- Example of update statement 
+UPDATE Customer
+SET name = "Dragonoverlord3000"
+WHERE customer_id = 2;
+
 -- Example of delete statement, note that by "ON DELETE CASCADE" this deletes all related rows too
 DELETE FROM Customer WHERE id = 1;
 
