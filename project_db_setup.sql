@@ -20,7 +20,7 @@ CREATE TABLE deposit(
     startup_date DATE NOT NULL,					
     currency VARCHAR(3) NOT NULL,
     PRIMARY KEY(number, customer_id),
-    FOREIGN KEY(customer_id) REFERENCES customer(id)
+    FOREIGN KEY(customer_id) REFERENCES customer(id) ON DELETE CASCADE
 );
 
 
@@ -50,7 +50,7 @@ CREATE TABLE investment(
     amount INT NOT NULL,
     PRIMARY KEY(issue_isin, deposit_number, customer_id, trade_date),
     FOREIGN KEY(deposit_number) REFERENCES deposit(number),
-    FOREIGN KEY(customer_id) REFERENCES customer(id),
+    FOREIGN KEY(customer_id) REFERENCES customer(id) ON DELETE CASCADE,
     FOREIGN KEY(issue_isin) REFERENCES issue(isin)
 );
 
