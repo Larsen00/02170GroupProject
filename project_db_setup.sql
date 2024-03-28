@@ -77,7 +77,6 @@ Possible extensions to setup:
 
 -- Inserting data into `customer`
 INSERT INTO customer (name, date_of_birth, join_date) VALUE
-('Elena Smith', '2010-12-05', '2022-03-15'),
 ('Elena Smith', '1998-12-05', '2022-03-15'),
 ('John Doe', '1969-08-13', '2022-07-22'),
 ('Michael Johnson', '1998-11-21', '2023-01-05'),
@@ -107,27 +106,15 @@ INSERT INTO deposit (number, customer_id, name, startup_date, currency) VALUES
 
 
 -- Inserting data into `currency`
-INSERT INTO currency (valuta, date, exchange_rate) VALUES
-('DKK', '2023-01-01', 1.0),
-('DKK', '2023-02-01', 1.0),
-('DKK', '2023-03-01', 1.0),
-('DKK', '2023-04-01', 1.0),
-('USD', '2022-01-01', 1.45),
-('USD', '2023-02-01', 1.50),
-('USD', '2023-03-01', 1.55),
-('USD', '2023-04-01', 1.48),
-('BTC', '2023-01-01', 25000.00),
-('BTC', '2023-02-01', 30000.00),
-('BTC', '2023-03-01', 35000.00),
-('BTC', '2023-04-01', 33000.00),
-('EUR', '2023-01-01', 1.10),
-('EUR', '2023-02-01', 1.15),
-('EUR', '2023-03-01', 1.12),
-('EUR', '2023-04-01', 1.18),
-('GBP', '2023-01-01', 1.30),
-('GBP', '2023-02-01', 1.35),
-('GBP', '2023-03-01', 1.32),
-('GBP', '2023-04-01', 1.28);
+INSERT INTO currency (valuta, date, exchange_rate)
+VALUES
+('USD', '2022-01-01', 1.48),
+('DKK', '2022-01-01', 1.0),
+('EUR', '2022-01-01', 1.10),
+('GBP', '2022-01-01', 1.35),
+('BTC', '2022-01-01', 33000.00);
+
+
 
 
 -- Inserting data into `issue`
@@ -154,42 +141,31 @@ INSERT INTO trades (issue_isin, deposit_number, customer_id, date, amount) VALUE
 ('EU000A1G0V05', 1, 9, '2022-07-01', 1500), -- Siemens AG investment by Ava Thompson
 ('GB0009252882', 1, 8, '2023-03-18', 2500), -- BP PLC investment by Liam Anderson
 ('US0231351067', 1, 10, '2023-01-05', 3000), -- Amazon.com Inc. stock investment by Isabella Garcia
-('BTC000000002', 1, 1, '2023-03-21', 0.2),  -- Ethereum Tracker One investment by Elena Smith
+('BTC000000002', 1, 1, '2023-03-21', 2),  -- Ethereum Tracker One investment by Elena Smith
 ('EU000A1G0V00', 1, 2, '2022-08-15', 4000), -- Volkswagen AG investment by John Doe
 ('GB0031348658', 1, 3, '2023-02-11', 1000), -- GlaxoSmithKline PLC investment by Michael Johnson
 ('DK0010268606', 1, 4, '2023-03-01', 500),  -- Carlsberg Group A/S investment by Sophia Brown
-('US5949181045', 1, 6, '2022-09-05', 750);  -- Microsoft Corp. Bond investment by Emma Wilson
+('US5949181045', 1, 6, '2022-09-05', 750),  -- Microsoft Corp. Bond investment by Emma Wilson
+('EU000A1G0V00', 1, 2, '2023-08-15', -2000), -- Volkswagen AG investment by John Doe
+('EU000A1G0V00', 1, 2, '2022-09-15', -2000); -- Volkswagen AG investment by John Doe
 
 
 
 -- Inserting data into `prices`
 INSERT INTO prices (isin, date, price) VALUES
-('DK0009806740', '2023-06-13', 169.5), -- Vestas Wind Systems on 2023-06-13
-('DK0009806740', '2022-02-08', 221.3), -- Vestas Wind Systems on 2022-02-08
-('DK0009806740', '2021-05-24', 245.7), -- Vestas Wind Systems on 2021-05-24
 ('US0378331005', '2023-04-17', 1), -- Apple Inc. Bond on 2023-04-17
-('US0378331005', '2021-09-13', 101.5), -- Apple Inc. Bond on 2021-09-13
-('BTC000000001', '2023-06-13', 29000),  -- Bitcoin Tracker One on 2023-06-13
-('BTC000000001', '2022-02-08', 40000),  -- Bitcoin Tracker One on 2022-02-08
-('BTC000000001', '2021-05-24', 35000),  -- Bitcoin Tracker One on 2021-05-24
-('US0231351067', '2022-11-08', 3110.77), -- Amazon.com Inc. on 2022-11-08
-('US0231351067', '2021-09-13', 3345.55), -- Amazon.com Inc. on 2021-09-13
-('EU000A1G0V05', '2023-06-13', 140.4),  -- Siemens AG on 2023-06-13
-('EU000A1G0V05', '2022-02-08', 132.2),  -- Siemens AG on 2022-02-08
-('EU000A1G0V05', '2021-05-24', 125.6),  -- Siemens AG on 2021-05-24
-('DK0009816458', '2023-04-01', 105.75), -- Danske Bank Bond
-('EU000A1G0V00', '2023-03-01', 154.3),  -- Volkswagen AG
-('GB0031348658', '2023-02-01', 18.67),  -- GlaxoSmithKline PLC
-('US5949181045', '2023-01-01', 305.2),  -- Microsoft Corp. Bond
-('DK0010268606', '2022-12-01', 1100.00),-- Carlsberg Group A/S
-('GB0009252882', '2022-11-01', 5.32),   -- BP PLC
-('US38259P5089', '2022-10-01', 2784.4), -- Google Inc. Bond
-('BTC000000002', '2022-09-01', 32000),  -- Ethereum Tracker One
-('US0378331005', '2023-04-18', 103.4), -- Apple Inc. Bond on 2023-04-17
+('DK0009806740', '2023-01-02', 169.5), -- Vestas Wind Systems, matching the closest available date
 ('EU000A1G0V05', '2022-07-01', 140.4), -- Siemens AG on 2022-07-01
 ('GB0009252882', '2023-03-18', 5.32), -- BP PLC on 2023-03-18
 ('US0231351067', '2023-01-05', 3110.77), -- Amazon.com Inc. on 2023-01-05
-('BTC000000002', '2023-03-21', 32000); -- Ethereum Tracker One on 2023-03-21
+('BTC000000002', '2023-03-21', 32000), -- Ethereum Tracker One on 2023-03-21
+('EU000A1G0V00', '2022-08-15', 150), -- Volkswagen AG on 2022-08-15, 
+('GB0031348658', '2023-02-11', 18.67), -- GlaxoSmithKline PLC on 2023-02-11
+('DK0010268606', '2023-03-01', 1100.00), -- Carlsberg Group A/S on 2023-03-01
+('US5949181045', '2022-09-05', 305.2), -- Microsoft Corp. Bond on 2022-09-05
+('EU000A1G0V00', '2023-03-01', 300), 
+('EU000A1G0V00', '2022-09-15', 300); 
+
 
 DELIMITER //
 CREATE FUNCTION supremum_valuta_date (d DATE, v VARCHAR(3))
@@ -259,50 +235,183 @@ CREATE FUNCTION investment_value (amount int, isin VARCHAR(12), d date)
 				FROM 
 					prices
 				WHERE 
-					prices.date = supremum_price_date(d, isin);
+					prices.date = supremum_price_date(d, isin) AND
+                    prices.isin = isin;
 		RETURN p*amount;
+    END//
+DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION calc_deposit_investment_value (amt int, isin VARCHAR(12), trade_date date, issue_valuta VARCHAR(3), deposit_valuta VARCHAR(3) )
+	RETURNS DECIMAL(65,2)
+	BEGIN
+		RETURN investment_value(amt, isin, trade_date)*convert_currency(issue_valuta, deposit_valuta, trade_date);
+	END//
+DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION calc_trade_value (amt int, isin VARCHAR(12), trade_date date, issue_valuta VARCHAR(3), deposit_valuta VARCHAR(3) )
+	RETURNS DECIMAL(65,2)
+	BEGIN
+		RETURN calc_deposit_investment_value(amt, isin, trade_date, issue_valuta, deposit_valuta)*(-1);
+	END//
+DELIMITER ;
+
+
+DELIMITER //
+CREATE FUNCTION get_deposit_valuta (id INT, number INT)
+RETURNS VARCHAR(3)
+BEGIN
+    DECLARE val VARCHAR(3);
+    SELECT currency INTO val FROM deposit 
+    WHERE number = number AND customer_id = id LIMIT 1;
+    RETURN val;
+END//
+DELIMITER ;
+
+
+DELIMITER //
+CREATE FUNCTION get_issue_valuta (i VARCHAR(12))
+	RETURNS VARCHAR(3)
+    BEGIN
+	DECLARE val VARCHAR(3);
+	SELECT valuta INTO val FROM issue WHERE isin = i LIMIT 1;
+	RETURN val;
     END//
 DELIMITER ;
 
 
 DELIMITER //
-CREATE FUNCTION calc_trade_value (isin VARCHAR(12), trade_date date, d_number int, c_id int, issue_valuta VARCHAR(3), deposit_valuta VARCHAR(3) )
-	RETURNS FLOAT
-	BEGIN
-		DECLARE amt INT;
-        DECLARE p FLOAT;
-		SELECT 
-				trades.amount INTO amt 
-            FROM 
-				trades
-			WHERE 
-				trades.issue_isin = isin AND 
-				trades.date = trade_date AND 
-				trades.deposit_number = d_number AND 
-				trades.customer_id = c_id;
-		RETURN investment_value(amt, isin, trade_date)*convert_currency(issue_valuta, deposit_valuta, trade_date);
-	END//
+CREATE FUNCTION buy_or_sell (amt int)
+	RETURNS TEXT
+    BEGIN
+    RETURN CASE
+        WHEN amt > 0 THEN "buy"
+        WHEN amt < 0 THEN "sell"
+        ELSE NULL 
+    END;
+    END//
 DELIMITER ;
 
+CREATE VIEW all_trades_with_values AS 
+	SELECT 
+		T.customer_id, 
+        deposit_number, 
+        isin,
+        D.currency as deposit_valuta,
+        I.name, 
+        date, 
+        amount, 
+        calc_trade_value(amount, isin, date, valuta, currency) as value,
+        buy_or_sell(amount) as status
+	FROM
+		deposit as D 
+	right join 
+		trades as T 
+	on 
+		D.number = T.deposit_number AND 
+        D.customer_id = T.customer_id 
+    left join 
+		issue as I 
+	on 
+		T.issue_isin = I.isin;
+
+CREATE VIEW all_active_investments AS 
+    SELECT
+		T.customer_id,
+		T.deposit_number, 
+        T.issue_isin AS isin,
+        T.amount,
+        get_issue_valuta(T.issue_isin) AS issue_valuta,
+        get_deposit_valuta(T.customer_id, T.deposit_number) AS deposit_valuta,
+        calc_deposit_investment_value(T.amount, T.issue_isin, CURDATE(), get_issue_valuta(T.issue_isin), get_deposit_valuta(T.customer_id, T.deposit_number)) AS value,
+        "active" as status
+    FROM (
+        SELECT 
+            issue_isin, 
+            deposit_number, 
+            customer_id, 
+            SUM(amount) AS amount
+        FROM
+            trades
+        GROUP BY 
+            issue_isin, 
+            deposit_number, 
+            customer_id
+    ) AS T
+    WHERE 
+        T.amount <> 0;
 
 
 
+CREATE VIEW customers_trades_values AS
+	SELECT 
+		I.customer_id, SUM(I.value_dkk) as value_dkk, I.status
+	FROM
+		(SELECT 
+			customer_id,
+			deposit_number,
+			deposit_valuta,
+			value,
+			ROUND(value * convert_currency(deposit_valuta, 'DKK', CURDATE()), 2) as value_dkk,
+			status
+		FROM 
+			all_active_investments
+		UNION ALL  
+		SELECT 
+			customer_id,
+			deposit_number,
+			deposit_valuta,
+			value,
+			ROUND(value * convert_currency(deposit_valuta, 'DKK', CURDATE()), 2) as value_dkk,
+			status
+		FROM 
+			all_trades_with_values) AS I
+	GROUP BY 
+		I.customer_id, I.status;
+        
+DELIMITER //
+CREATE FUNCTION investments_return (id INT)
+RETURNS FLOAT
+BEGIN
+    DECLARE investment DECIMAL(65,2);
+    DECLARE value DECIMAL(65,2);
+    DECLARE sells DECIMAL(65,2);
+    SELECT value_dkk INTO investment FROM customers_trades_values WHERE customer_id = id AND status = 'buy';
+    SELECT value_dkk INTO value FROM customers_trades_values WHERE customer_id = id AND status = 'active';
+    SELECT value_dkk INTO sells FROM customers_trades_values WHERE customer_id = id AND status = 'sell';
+    
+    IF investment IS NULL THEN
+		SELECT 0 INTO investment;
+	END IF;
+    
+    IF value IS NULL THEN
+		SELECT 0 INTO value;
+	END IF;
+    
+    IF sells IS NULL THEN
+		SELECT 0 INTO sells;
+	END IF;
+    
+    IF investment = 0 THEN
+        RETURN 0;
+    ELSE
+        RETURN (investment + value + sells) / ABS(investment);
+    END IF;
+END//
+DELIMITER ;
 
+select investments_return(2);
 
+CREATE VIEW customer_investment_return as 
+	SELECT *, investments_return(id) FROM customer;
+    
+SELECT * FROM customer_investment_return;
+SELECT * from customers_trades_values;
 
+select * from all_active_investments;
+select * from all_trades_with_values;
 
-
-# TEST
-SELECT convert_currency('USD', 'DKK', '2023-04-17');
-SELECT investment_value (1000, 'US0378331005', '2023-04-17');
-SELECT calc_trade_value('US0378331005', '2023-04-17', 1, 5, 'USD', 'DKK');
-
-
-
-
-# CREATE FUNCTION customer_investment_value (c_id int, d date)
-# 	RETURNS FLOAT
-# 	
-
-
-
+SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'buy';
+    SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'active';
+    SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'sell';
