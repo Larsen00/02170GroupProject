@@ -39,7 +39,7 @@ CREATE TABLE issue(
     FOREIGN KEY(valuta) REFERENCES currency
 );
 
-# Assumes no fractional shares
+-- Assumes no fractional shares
 CREATE TABLE trades(
 	issue_isin VARCHAR(12),
     deposit_number INT,
