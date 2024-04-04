@@ -166,6 +166,14 @@ INSERT INTO prices (isin, date, price) VALUES
 ('EU000A1G0V00', '2023-03-01', 300), 
 ('EU000A1G0V00', '2022-09-15', 300); 
 
+-- Visualizing database
+SELECT * FROM customer;
+SELECT * FROM deposit;
+SELECT * FROM currency;
+SELECT * FROM issue;
+SELECT * FROM trades;
+SELECT * FROM prices;
+
 
 DELIMITER //
 CREATE FUNCTION supremum_valuta_date (d DATE, v VARCHAR(3))

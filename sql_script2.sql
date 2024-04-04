@@ -129,7 +129,7 @@ SELECT name FROM customer WHERE id IN (SELECT customer_id FROM deposit);
 -- Example of update statement - flag all customers with an invalid age (AE = Age Error)
 UPDATE Customer
 SET name = CONCAT("AE_", name)
-WHERE CalculateAge(date_of_birth);
+WHERE CalculateAge(date_of_birth) < 18;
 
 
 -- Example of delete - delete all customers flagged with "AE_"
