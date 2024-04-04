@@ -1,37 +1,41 @@
 USE ISSUE_BANK;
-SET SQL_SAFE_UPDATES = 0;
 
--- Function and event for calculating new prices 
-
+-- Function to generate a random percentage
 DELIMITER //
-CREATE FUNCTION randomPercentage() RETURNS DECIMAL(5,2)
+CREATE PROCEDURE generateRandomPercentage(OUT rand_num DECIMAL(5,2))
 BEGIN
-    DECLARE rand_num DECIMAL(5,2);
-    repeat
-    -- Generate a random number between 3% and -4%
-    SET rand_num = RAND() * 0.07 - 0.04;
-    until rand_num != 0 end repeat;
-    
-    RETURN rand_num;
+    REPEAT
+        -- Generate a random number between -4% and 3%
+        SET rand_num = RAND() * 0.07 - 0.04;
+    UNTIL rand_num != 0 END REPEAT;
 END//
 DELIMITER ;
 
-SET GLOBAL event_scheduler = 1;
+-- Enable the event scheduler
+SET GLOBAL event_scheduler = ON;
 
+-- Create an event to update prices
 DELIMITER //
-
 CREATE EVENT new_prices
-ON SCHEDULE EVERY 1 day
-STARTS CURRENT_TIMESTAMP + INTERVAL 1 DAY
+ON SCHEDULE EVERY 1 SECOND
+STARTS CURRENT_TIMESTAMP
 DO
 BEGIN
+    DECLARE rand_percentage DECIMAL(5,2);
+    CALL generateRandomPercentage(rand_percentage);
+    
     UPDATE prices
-    SET price = price * (1+randomPercentage());
+    SET price = price * (1 + rand_percentage);
 END//
 DELIMITER ;
--- End of function and event for calculating new prices 
+
+-- Enable the new_prices event
+ALTER EVENT new_prices ENABLE;
 
 select * from prices;
+
+
+
 
 
 
@@ -101,18 +105,7 @@ END //
 DELIMITER ;
 -- END OF Function and trigger for checking ISIN validity
 
-
-
 -- Queries Opgave 6
--- Give three examples of typical SQL query statements using joins, group by,
--- and set operations like UNION and IN. For each query explain informally
--- what it asks about. Show also the output of the queries.
--- number of people with Savings accounts
-SELECT COUNT(*) AS "Savings accounts" FROM deposit WHERE deposit.name LIKE '%saving%'; 
-
--- sum of money invested for each customer
--- SELECT customer_id, SUM(p.price) FROM trades t JOIN prices p ON t.issue_isin = p.isin AND t.date = p.date GROUP BY t.customer_id;
-
 -- number of trades made by each customer
 SELECT c.name, COUNT(*) AS numOfTrades
 FROM customer c
@@ -124,12 +117,16 @@ SELECT name FROM customer WHERE id IN (SELECT customer_id FROM trades)
 UNION
 SELECT name FROM customer WHERE id IN (SELECT customer_id FROM deposit);
 
-
+-- average volume of trades for each issue type
+SELECT i.type, AVG(t.amount) AS avg_volume
+FROM trades t
+JOIN issue i ON t.issue_isin = i.isin
+GROUP BY i.type;
 
 -- Example of update statement - flag all customers with an invalid age (AE = Age Error)
 UPDATE Customer
 SET name = CONCAT("AE_", name)
-WHERE CalculateAge(date_of_birth);
+WHERE CalculateAge(date_of_birth) < 18;
 
 
 -- Example of delete - delete all customers flagged with "AE_"
