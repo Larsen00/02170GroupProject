@@ -35,10 +35,20 @@ select * from prices;
 
 
 
-
-
-
-
+-- Before save deposit
+DELIMITER //
+CREATE TRIGGER deposit_before_save
+BEFORE INSERT ON deposit FOR EACH ROW
+BEGIN
+    DECLARE deposits_count INT;
+    SELECT COUNT(*) INTO deposits_count FROM deposit WHERE customer_id = NEW.customer_id;
+    IF deposits_count IS NULL THEN
+        SET NEW.number = 1;
+    ELSE
+        SET NEW.number = deposits_count + 1;
+    END IF;
+END //
+DELIMITER ;
 
 
 
@@ -47,10 +57,10 @@ DELIMITER $$
 CREATE TRIGGER Trades_Before_Insert
 BEFORE INSERT ON trades FOR EACH ROW
 BEGIN 
-    IF NEW.date NOT IN (SELECT prices.date FROM prices);
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'The trade date does not exist in the prices table.';
-    ENDIF;
-END$$
+    IF NEW.date NOT IN (SELECT prices.date FROM prices)
+       THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'The trade date does not exist in the prices table.';
+    END IF;
+END $$
 DELIMITER ;
 
 -- Age Function
