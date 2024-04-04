@@ -2,7 +2,6 @@ USE ISSUE_BANK;
 SET SQL_SAFE_UPDATES = 0;
 
 -- Function and event for calculating new prices 
-
 DELIMITER //
 CREATE FUNCTION randomPercentage() RETURNS DECIMAL(5,2)
 BEGIN
@@ -30,8 +29,6 @@ BEGIN
 END//
 DELIMITER ;
 -- End of function and event for calculating new prices 
-
-select * from prices;
 
 
 
@@ -101,18 +98,7 @@ END //
 DELIMITER ;
 -- END OF Function and trigger for checking ISIN validity
 
-
-
 -- Queries Opgave 6
--- Give three examples of typical SQL query statements using joins, group by,
--- and set operations like UNION and IN. For each query explain informally
--- what it asks about. Show also the output of the queries.
--- number of people with Savings accounts
-SELECT COUNT(*) AS "Savings accounts" FROM deposit WHERE deposit.name LIKE '%saving%'; 
-
--- sum of money invested for each customer
--- SELECT customer_id, SUM(p.price) FROM trades t JOIN prices p ON t.issue_isin = p.isin AND t.date = p.date GROUP BY t.customer_id;
-
 -- number of trades made by each customer
 SELECT c.name, COUNT(*) AS numOfTrades
 FROM customer c
@@ -124,7 +110,11 @@ SELECT name FROM customer WHERE id IN (SELECT customer_id FROM trades)
 UNION
 SELECT name FROM customer WHERE id IN (SELECT customer_id FROM deposit);
 
-
+-- average volume of trades for each issue type
+SELECT i.type, AVG(t.amount) AS avg_volume
+FROM trades t
+JOIN issue i ON t.issue_isin = i.isin
+GROUP BY i.type;
 
 -- Example of update statement - flag all customers with an invalid age (AE = Age Error)
 UPDATE Customer
