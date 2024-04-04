@@ -1,34 +1,41 @@
 USE ISSUE_BANK;
-SET SQL_SAFE_UPDATES = 0;
 
--- Function and event for calculating new prices 
+-- Function to generate a random percentage
 DELIMITER //
-CREATE FUNCTION randomPercentage() RETURNS DECIMAL(5,2)
+CREATE PROCEDURE generateRandomPercentage(OUT rand_num DECIMAL(5,2))
 BEGIN
-    DECLARE rand_num DECIMAL(5,2);
-    repeat
-    -- Generate a random number between 3% and -4%
-    SET rand_num = RAND() * 0.07 - 0.04;
-    until rand_num != 0 end repeat;
-    
-    RETURN rand_num;
+    REPEAT
+        -- Generate a random number between -4% and 3%
+        SET rand_num = RAND() * 0.07 - 0.04;
+    UNTIL rand_num != 0 END REPEAT;
 END//
 DELIMITER ;
 
-SET GLOBAL event_scheduler = 1;
+-- Enable the event scheduler
+SET GLOBAL event_scheduler = ON;
 
+-- Create an event to update prices
 DELIMITER //
-
 CREATE EVENT new_prices
-ON SCHEDULE EVERY 1 day
-STARTS CURRENT_TIMESTAMP + INTERVAL 1 DAY
+ON SCHEDULE EVERY 1 SECOND
+STARTS CURRENT_TIMESTAMP
 DO
 BEGIN
+    DECLARE rand_percentage DECIMAL(5,2);
+    CALL generateRandomPercentage(rand_percentage);
+    
     UPDATE prices
-    SET price = price * (1+randomPercentage());
+    SET price = price * (1 + rand_percentage);
 END//
 DELIMITER ;
--- End of function and event for calculating new prices 
+
+-- Enable the new_prices event
+ALTER EVENT new_prices ENABLE;
+
+select * from prices;
+
+
+
 
 
 
