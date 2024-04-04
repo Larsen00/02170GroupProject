@@ -4,7 +4,7 @@ USE issue_bank;
 
 
 CREATE TABLE customer(
-	id INT AUTO_INCREMENT,
+	id INT AUTO_INCREMENT ,
     name TEXT NOT NULL, 							
     date_of_birth DATE NOT NULL,
     join_date DATE DEFAULT NOW(),
@@ -47,7 +47,7 @@ CREATE TABLE trades(
     date DATE,
     amount INT NOT NULL,
     PRIMARY KEY(issue_isin, deposit_number, customer_id, date),
-    FOREIGN KEY(deposit_number) REFERENCES deposit(number),
+    FOREIGN KEY(deposit_number) REFERENCES deposit(number) ON DELETE CASCADE,
     FOREIGN KEY(customer_id) REFERENCES customer(id) ON DELETE CASCADE,
     FOREIGN KEY(issue_isin) REFERENCES issue(isin)
 );
