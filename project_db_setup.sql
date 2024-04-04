@@ -413,5 +413,5 @@ select * from all_active_investments;
 select * from all_trades_with_values;
 
 SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'buy';
-    SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'active';
-    SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'sell';
+SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'active';
+SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'sell';
