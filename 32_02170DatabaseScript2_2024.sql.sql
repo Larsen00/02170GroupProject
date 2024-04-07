@@ -1,4 +1,5 @@
 USE ISSUE_BANK;
+SET SQL_SAFE_UPDATES = 0;
 
 -- Function to generate a random percentage
 DELIMITER //

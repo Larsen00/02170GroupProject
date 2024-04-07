@@ -409,17 +409,8 @@ BEGIN
 END//
 DELIMITER ;
 
-select investments_return(2);
 
 CREATE VIEW customer_investment_return as 
-	SELECT *, investments_return(id) FROM customer;
+	SELECT *, investments_return(id)*100 AS 'Total investments returns %' FROM customer;
     
-SELECT * FROM customer_investment_return;
-SELECT * from customers_trades_values;
-
-select * from all_active_investments;
-select * from all_trades_with_values;
-
-SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'buy';
-SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'active';
-SELECT value_dkk  FROM customers_trades_values WHERE customer_id = 2 AND status = 'sell';
+SELECT * from customer_investment_return;
